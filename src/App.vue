@@ -27,7 +27,7 @@
         </button>
     </section>
   </div>
-  <div class="dark:bg-gray-700 min-h-screen transition-all duration-300 lg:pt-10">
+  <div class="dark:bg-gray-700 min-h-screen transition-all duration-300 lg:pt-10 px-5">
     <div class="dark:bg-gray-800 dark:text-white max-w-3xl mx-auto p-6 transition-all duration-300 rounded-2xl shadow-lg space-y-8">
       <h1 class="text-3xl font-bold text-center text-blue-800">Pencatatan Tabungan & Pengeluaran</h1>
 
