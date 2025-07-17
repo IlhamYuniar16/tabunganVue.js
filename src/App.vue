@@ -2,13 +2,22 @@
   <div class="dark:bg-gray-700 transition-all duration-300 dark:shadow-lg shadow-lg">
     <section class="flex justify-between container m-auto p-5 items-center">
         <div>
-          <div>
-            <h1 class="dark:text-white text-2xl font-bold">Ilham Yuniar Tio Al Fahrozi</h1>
+          <div class="flex gap-5 items-center">
+            <h1 class="dark:text-white text-2xl font-bold">Tabungan: {{ usernameMe }}</h1>
+            <svg @click="editUser" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 dark:text-white ">
+              <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L6.832 19.82a4.5 4.5 0 0 1-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 0 1 1.13-1.897L16.863 4.487Zm0 0L19.5 7.125" />
+          </svg>
+          </div>
+          <div v-if="openUser" class="relative">
+            <form action="" @submit.prevent="submitUser" class="flex flex-col items-start">
+              <input v-model="usernameMe" type="text" placeholder="Masukan Username Anda" class="pr-10 pl-3 py-1 border focus:ring-1 focus:outline-none focus:ring-blue-400 border-blue-400 rounded-2xl">
+              <button type="submit" class="bg-blue-400 px-23 rounded-2xl mt-3 py-2 text-white hover:bg-blue-500 transition  cursor-pointer">Pasang</button>
+            </form>
           </div>
         </div>
         <button @click="darkMode" class="bg-white rounded-full p-1 shadow-lg dark:bg-gray-700 transition-all duration-300">
           <div v-if="dark">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 text-white">
               <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v2.25m6.364.386-1.591 1.591M21 12h-2.25m-.386 6.364-1.591-1.591M12 18.75V21m-4.773-4.227-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0Z" /></svg>
           </div>
           <div v-else>
@@ -113,6 +122,8 @@ const nabung = ref(0)
 const data = ref([])
 const tabungan = ref(0)
 const dark = ref(false)
+const usernameMe = ref('')
+const openUser = ref(false)
 
 
 function darkMode() {
@@ -137,6 +148,19 @@ onMounted(() => {
     dark.value = false
   }
 })
+
+
+function editUser() {
+  openUser.value = !openUser.value
+}
+
+function submitUser() {
+  const name = usernameMe.value.trim()
+  if (!name) return
+
+  localStorage.setItem('usernameMe', name)
+  openUser.value = false
+}
 
 function saveTabungan() {
   if (!nabung.value || nabung.value <= 0) return
@@ -179,6 +203,16 @@ function getTabungan() {
   if (saved) tabungan.value = JSON.parse(saved)
 }
 
+function getUser() {
+  const saved = localStorage.getItem('usernameMe')
+  if (saved) {
+    usernameMe.value = saved
+    openUser.value = false
+  } else {
+    openUser.value = true
+  }
+}
+
 const total = computed(() => {
   const pengeluaran = data.value.reduce((sum, item) => sum + item.price * item.quantity, 0)
   return tabungan.value - pengeluaran
@@ -187,5 +221,6 @@ const total = computed(() => {
 onMounted(() => {
   getData()
   getTabungan()
+  getUser()
 })
 </script>
