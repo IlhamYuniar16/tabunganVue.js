@@ -47,6 +47,8 @@
             class="w-full px-4 py-2 rounded-lg border border-blue-300 focus:outline-none focus:ring-2 focus:ring-blue-400" />
           <input type="number" v-model="price" placeholder="Harga"
             class="w-full px-4 py-2 rounded-lg border border-blue-300 focus:outline-none focus:ring-2 focus:ring-blue-400" />
+          <input type="date" v-model="tanggal" placeholder="Harga"
+            class="w-full px-4 py-2 rounded-lg border border-blue-300 focus:outline-none focus:ring-2 focus:ring-blue-400" />
           <div class="flex gap-4">
             <button type="submit"
               class="flex-1 bg-blue-600 text-white py-2 rounded-lg hover:drop-shadow transition drop-shadow-xl/60 drop-shadow-blue-500 hover:drop-shadow-blue-500 cursor-pointer">Simpan</button>
@@ -67,6 +69,7 @@
                 <th class="px-4 py-2 border">Kategori</th>
                 <th class="px-4 py-2 border">Jumlah</th>
                 <th class="px-4 py-2 border">Harga</th>
+                <th class="px-4 py-2 border">Tanggal</th>
                 <th class="px-4 py-2 border">Aksi</th>
               </tr>
             </thead>
@@ -76,11 +79,12 @@
                 <td class="px-4 py-2 border">{{ item.category }}</td>
                 <td class="px-4 py-2 border">{{ item.quantity }}</td>
                 <td class="px-4 py-2 border">Rp {{ item.price }}</td>
+                <td class="px-4 py-2 border">{{ item.tanggal }}</td>
                 <td class="px-4 py-2 border">
                   <button @click="hapus(index)"
                     class="bg-red-500 hover:bg-red-600 cursor-pointer text-white px-4 py-1 rounded-md transition"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-  <path stroke-linecap="round" stroke-linejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
-</svg></button>
+                    <path stroke-linecap="round" stroke-linejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" /></svg>
+                  </button>
                 </td>
               </tr>
             </tbody>
@@ -104,6 +108,7 @@ import { ref, onMounted, computed } from 'vue'
 const category = ref('')
 const quantity = ref(0)
 const price = ref(0)
+const tanggal = ref('')
 const nabung = ref(0)
 const data = ref([])
 const tabungan = ref(0)
@@ -141,8 +146,8 @@ function saveTabungan() {
 }
 
 function saveData() {
-  if (!category.value || quantity.value <= 0 || price.value <= 0) return
-  data.value.push({ category: category.value, quantity: Number(quantity.value), price: Number(price.value) })
+  if (!category.value || quantity.value <= 0 || price.value <= 0 || tanggal.value === '') return
+  data.value.push({ category: category.value, quantity: Number(quantity.value), price: Number(price.value), tanggal: tanggal.value })
   localStorage.setItem('DataMe', JSON.stringify(data.value))
   category.value = ''
   quantity.value = 0
